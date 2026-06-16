@@ -20,6 +20,10 @@ const CATEGORY_LABEL: Record<Place['category'], string> = {
   cafe: '카페',
   restaurant: '식당',
   dessert: '디저트',
+  food: '식당',
+  other: '기타',
+  sports: '스포츠',
+  stay: '숙소',
 }
 
 export default function PlaceDetailPage() {
