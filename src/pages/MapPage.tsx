@@ -128,13 +128,25 @@ export default function MapPage() {
   }
 
   const moveToCurrentPos = () => {
-    navigator.geolocation?.getCurrentPosition(pos => {
-      const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
-      setUserPos(newPos)
-      mapInstanceRef.current?.setCenter(
-        new window.kakao.maps.LatLng(newPos.lat, newPos.lng)
-      )
-    })
+    if (!navigator.geolocation) {
+      alert('이 브라우저는 위치 서비스를 지원하지 않습니다.')
+      return
+    }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+        setUserPos(newPos)
+        mapInstanceRef.current?.setCenter(
+          new window.kakao.maps.LatLng(newPos.lat, newPos.lng)
+        )
+        mapInstanceRef.current?.setLevel(4)
+      },
+      err => {
+        if (err.code === err.PERMISSION_DENIED) {
+          alert('위치 권한이 거부되었습니다. 브라우저 설정에서 위치 접근을 허용해주세요.')
+        }
+      }
+    )
   }
 
   return (
