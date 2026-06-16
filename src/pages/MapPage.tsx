@@ -136,16 +136,20 @@ export default function MapPage() {
       pos => {
         const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
         setUserPos(newPos)
-        mapInstanceRef.current?.setCenter(
-          new window.kakao.maps.LatLng(newPos.lat, newPos.lng)
-        )
-        mapInstanceRef.current?.setLevel(4)
+        const map = mapInstanceRef.current
+        if (map && window.kakao?.maps) {
+          map.setCenter(new window.kakao.maps.LatLng(newPos.lat, newPos.lng))
+          map.setLevel(4)
+        }
       },
       err => {
         if (err.code === err.PERMISSION_DENIED) {
           alert('위치 권한이 거부되었습니다. 브라우저 설정에서 위치 접근을 허용해주세요.')
+        } else {
+          alert('위치를 가져올 수 없습니다. 잠시 후 다시 시도해주세요.')
         }
-      }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
     )
   }
 
