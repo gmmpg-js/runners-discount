@@ -21,6 +21,8 @@ export default function SubmitPage() {
   const [authCondition, setAuthCondition] = useState('')
   const [expiredAt, setExpiredAt] = useState('')
   const [suggestions, setSuggestions] = useState<KakaoPlace[]>([])
+  const [mapUrl, setMapUrl] = useState('')
+  const [naverMapUrl, setNaverMapUrl] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const searchPlace = async (query: string) => {
@@ -79,6 +81,8 @@ export default function SubmitPage() {
       discount_content: discount,
       auth_condition: authCondition || null,
       expired_at: expiredAt || null,
+      map_url: mapUrl || null,
+      naver_map_url: naverMapUrl || null,
       status: 'pending',
     })
 
@@ -180,6 +184,27 @@ export default function SubmitPage() {
             type="date"
             value={expiredAt}
             onChange={e => setExpiredAt(e.target.value)}
+            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#A8E63D]"
+          />
+        </div>
+
+        {/* 지도 URL */}
+        <div>
+          <label className="text-xs text-gray-500 mb-1 block">카카오맵 URL (선택)</label>
+          <input
+            value={mapUrl}
+            onChange={e => setMapUrl(e.target.value)}
+            placeholder="http://place.map.kakao.com/..."
+            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#A8E63D]"
+          />
+        </div>
+
+        <div>
+          <label className="text-xs text-gray-500 mb-1 block">네이버지도 URL (선택)</label>
+          <input
+            value={naverMapUrl}
+            onChange={e => setNaverMapUrl(e.target.value)}
+            placeholder="https://naver.me/..."
             className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#A8E63D]"
           />
         </div>
