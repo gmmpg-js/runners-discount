@@ -44,6 +44,15 @@
 - [x] robots.txt — AI 봇 명시 허용
 - [x] llms.txt — AI 검색 노출용 매장 목록
 
+### 토스 미니앱
+- [x] @apps-in-toss/web-framework SDK 2.x 설치 (기존 Vite 프로젝트 in-place 전환)
+- [x] granite.config.ts 작성 (appName, brand, geolocation 권한)
+- [x] 카카오맵 WebView 렌더링 확인 (도메인 등록: runners-discount.private-apps.tossmini.com)
+- [x] 토스 SDK geolocation API 연동 (src/lib/toss.ts)
+- [x] 외부 링크 openExternalURL 전환 (길찾기 버튼)
+- [x] .ait 빌드 성공 및 콘솔 업로드, 검수 요청
+- [x] Supabase CORS 동작 확인 (anon key 직접 쿼리 방식으로 별도 설정 불필요)
+
 ## 진행 예정
 
 ### 단기

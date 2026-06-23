@@ -18,7 +18,7 @@ export default defineConfig({
   // 빌드 산출물 디렉토리 (vite build outDir과 일치해야 함, 기본값 'dist')
   outdir: 'dist',
 
-  permissions: ['geolocation'],
+  permissions: [{ name: 'geolocation', access: 'access' }],
 
   web: {
     host: 'localhost',

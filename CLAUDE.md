@@ -55,6 +55,14 @@ Claude 모바일 스킬로 관리. 자세한 내용 → [[wiki/skills.md]]
 2. `/list-places pending` 으로 검토
 3. `/update-place [ID]` → `status: approved` → 지도 노출
 
+## 토스 미니앱
+- **SDK**: @apps-in-toss/web-framework 2.x (기존 Vite 프로젝트 in-place 전환)
+- **설정 파일**: `granite.config.ts` (appName: runners-discount, primaryColor: #A8E63D)
+- **빌드**: `./node_modules/.bin/ait build` → `runners-discount.ait`
+- **WebView 도메인**: `https://runners-discount.private-apps.tossmini.com` (카카오맵 허용 도메인 등록 필요)
+- **토스 SDK 유틸**: `src/lib/toss.ts` — `isTossEnv`, `getCurrentPosition`, `openExternalURL`
+- **권한**: `geolocation` (granite.config.ts에 `{ name: 'geolocation', access: 'access' }` 형태로 선언)
+
 ## 코딩 컨벤션
 - 컴포넌트: 함수형 + hooks
 - 스타일: Tailwind 인라인 (CSS 파일은 커스텀 클래스만 `index.css`)
