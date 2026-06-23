@@ -182,6 +182,7 @@ export default function PlaceDetailPage() {
                 <button
                   key={photo.id}
                   onClick={() => openExternalURL(photo.url)}
+                  aria-label="사진 크게 보기"
                   className="shrink-0"
                 >
                   <img

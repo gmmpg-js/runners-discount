@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { usePlaces } from '../hooks/usePlaces'
 import type { Place } from '../types'
 import { CATEGORY_CONFIG, summarizeDiscount } from '../lib/markerUtils'
-import { getCurrentPosition } from '../lib/toss'
+import { getCurrentPosition, LocationPermissionDeniedError } from '../lib/toss'
 
 const CATEGORIES = [
   { key: 'all', label: '전체' },
@@ -139,8 +139,7 @@ export default function MapPage() {
         }
       })
       .catch(err => {
-        const isDenied = err?.code === 1 // PERMISSION_DENIED
-        if (isDenied) {
+        if (err instanceof LocationPermissionDeniedError) {
           alert('위치 권한이 거부되었습니다. 설정에서 위치 접근을 허용해주세요.')
         } else {
           alert('위치를 가져올 수 없습니다. 잠시 후 다시 시도해주세요.')
