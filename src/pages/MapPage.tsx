@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { usePlaces } from '../hooks/usePlaces'
 import type { Place } from '../types'
 import { CATEGORY_CONFIG, summarizeDiscount } from '../lib/markerUtils'
+import { getCurrentPosition } from '../lib/toss'
 
 const CATEGORIES = [
   { key: 'all', label: '전체' },
@@ -43,9 +44,9 @@ export default function MapPage() {
   const { places } = usePlaces(userPos.lat, userPos.lng, category)
 
   useEffect(() => {
-    navigator.geolocation?.getCurrentPosition(pos => {
-      setUserPos({ lat: pos.coords.latitude, lng: pos.coords.longitude })
-    })
+    getCurrentPosition()
+      .then(pos => setUserPos(pos))
+      .catch(() => { /* 위치 권한 거부 시 기본 위치(올림픽공원) 유지 */ })
   }, [])
 
   useEffect(() => {
@@ -128,29 +129,23 @@ export default function MapPage() {
   }
 
   const moveToCurrentPos = () => {
-    if (!navigator.geolocation) {
-      alert('이 브라우저는 위치 서비스를 지원하지 않습니다.')
-      return
-    }
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+    getCurrentPosition()
+      .then(newPos => {
         setUserPos(newPos)
         const map = mapInstanceRef.current
         if (map && window.kakao?.maps) {
           map.setCenter(new window.kakao.maps.LatLng(newPos.lat, newPos.lng))
           map.setLevel(4)
         }
-      },
-      err => {
-        if (err.code === err.PERMISSION_DENIED) {
-          alert('위치 권한이 거부되었습니다. 브라우저 설정에서 위치 접근을 허용해주세요.')
+      })
+      .catch(err => {
+        const isDenied = err?.code === 1 // PERMISSION_DENIED
+        if (isDenied) {
+          alert('위치 권한이 거부되었습니다. 설정에서 위치 접근을 허용해주세요.')
         } else {
           alert('위치를 가져올 수 없습니다. 잠시 후 다시 시도해주세요.')
         }
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    )
+      })
   }
 
   return (

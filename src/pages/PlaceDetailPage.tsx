@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 import { mockPlaces } from '../data/mockPlaces'
 import { usePlacePhotos } from '../hooks/usePlacePhotos'
 import type { Place } from '../types'
+import { openExternalURL } from '../lib/toss'
 
 function Multiline({ text, className }: { text: string; className?: string }) {
   return (
@@ -122,27 +123,24 @@ export default function PlaceDetailPage() {
         </div>
 
         {/* 길찾기 버튼: DB 값이 있는 것만 노출. 둘 다 없으면 영역 숨김 */}
+        {/* 토스 미니앱 정책상 target="_blank" 대신 SDK openURL 사용 (웹은 window.open으로 폴백) */}
         {hasMapLinks && (
           <div className={`grid gap-3 ${kakaoUrl && naverUrl ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {kakaoUrl && (
-              <a
-                href={kakaoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openExternalURL(kakaoUrl)}
                 className="flex items-center justify-center gap-1.5 bg-[#FEE500] text-[#191d12] font-medium py-3 rounded-xl text-center text-sm"
               >
                 <span aria-hidden>🗺️</span>카카오맵
-              </a>
+              </button>
             )}
             {naverUrl && (
-              <a
-                href={naverUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openExternalURL(naverUrl)}
                 className="flex items-center justify-center gap-1.5 bg-[#03C75A] text-white font-medium py-3 rounded-xl text-center text-sm"
               >
                 <span aria-hidden>🧭</span>네이버지도
-              </a>
+              </button>
             )}
           </div>
         )}
@@ -181,11 +179,9 @@ export default function PlaceDetailPage() {
           ) : (
             <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
               {photos.map(photo => (
-                <a
+                <button
                   key={photo.id}
-                  href={photo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() => openExternalURL(photo.url)}
                   className="shrink-0"
                 >
                   <img
@@ -194,7 +190,7 @@ export default function PlaceDetailPage() {
                     loading="lazy"
                     className="w-28 h-28 object-cover rounded-xl bg-gray-100"
                   />
-                </a>
+                </button>
               ))}
             </div>
           )}
